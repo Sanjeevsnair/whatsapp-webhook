@@ -24,3 +24,10 @@ export type ImageMessageBody = {
 export type ImageMessage = MessageJson & {
     image: ImageMessageBody,
 }
+export type QuickReplyMessageBody = {
+    body: string,
+}
+
+export type QuickReplyMessage = MessageJson & {
+    quickReply: QuickReplyMessageBody
+}

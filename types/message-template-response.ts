@@ -57,5 +57,7 @@ export type MessageTemplateButton = {
     type: "URL" | "QUICK_REPLY";
     text: string;
     url?: string;
+    quickReplyText?: string; // New field for quick reply text
     example?: string[];
 };
+

@@ -5,4 +5,5 @@ export type MediaResponse = {
     "file_size": number,
     "id": string,
     "messaging_product": "whatsapp"
+    "quickReplyText"?: string;
 }
