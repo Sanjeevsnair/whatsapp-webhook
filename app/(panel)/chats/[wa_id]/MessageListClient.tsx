@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import { DBTables } from "@/lib/enums/Tables"
-import { MessageJson, TextMessage } from "../../../../types/Message"
+import { MessageJson, QuickReplyMessage, TextMessage } from "../../../../types/Message"
 import { createClient } from "@/utils/supabase-browser"
 import ReceivedImageMessageUI from "./ReceivedImageMessageUI"
 import ReceivedTextMessageUI from "./ReceivedTextMessageUI"
 import TailWrapper from "./TailWrapper"
+import ReceivedQuickReplyMessageUI from "./ReceivedQuickReplyMessageUI"
+import ReceivedTemplateMessageUI from "./ReceivedTemplateMessageUI"
+import { MessageTemplate } from "@/types/message-template-response"
 
 type UIMessageModel = DBMessage & {
     msgDate: string
@@ -40,7 +43,7 @@ export default function MessageListClient({ messages, from }: { messages: DBMess
                 schema: 'public',
                 table: DBTables.Messages,
                 filter: `chat_id=eq.${from}`
-            }, payload => {
+            }, (payload: { new: DBMessage }) => {
                 setMessages([...stateMessages, ...addDateToMessages([payload.new])])
                 scrollToBottom()
             })
@@ -76,6 +79,10 @@ export default function MessageListClient({ messages, from }: { messages: DBMess
                                                         return <ReceivedTextMessageUI textMessage={messageBody as TextMessage} />
                                                     case "image":
                                                         return <ReceivedImageMessageUI message={message} />
+                                                    case "quickReply":
+                                                        return <ReceivedQuickReplyMessageUI quickReplyMessage={messageBody as QuickReplyMessage} />;
+                                                    case "":
+                                                        return <ReceivedTemplateMessageUI messageTemplate={messageBody as unknown as MessageTemplate} />; 
                                                     default:
                                                         return <div>Unsupported message</div>
                                                 }
